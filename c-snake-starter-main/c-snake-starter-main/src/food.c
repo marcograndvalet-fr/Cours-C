@@ -6,8 +6,8 @@
 
 void createFood(int bg[],int food[2], int nx, int ny){
     if( food[0] == 0){
-        food[0] = rand()%(nx-2) + 2;
-        food[1] = rand()%(ny-2) + 2;
+        food[0] = rand()%(nx-3) + 2;
+        food[1] = rand()%(ny-3) + 2;
         bg[food[1]*nx+food[0]] = 2;
 
     }

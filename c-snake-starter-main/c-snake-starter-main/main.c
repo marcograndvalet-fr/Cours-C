@@ -72,6 +72,8 @@ bool verifyBorder(Snake* snake, int nx, int ny){
 }
 
 
+
+
 void setupSnake(Snake* snake, int init_size){
     // Initialize the snake with the given initial size
     snake->length = init_size;
@@ -83,13 +85,19 @@ void setupSnake(Snake* snake, int init_size){
 
 }
 
-void update_snake_coordinates(struct Snake* snake, int dxdy[2]){
+void update_snake_coordinates(struct Snake* snake, int dxdy[2], int nx){
     // Update the snake coordinates based on the current direction
+    
     int l = snake->length;
     for (int i = 1; i< l ; i++){
         snake->body[l-i].x = snake->body[l-i-1].x;
         snake->body[l-i].y = snake->body[l-i-1].y;
+        // suicide si il se rentre dedans
+        if (snake->body[0].x + dxdy[0] + nx * (snake->body[0].y + dxdy[1]) == snake->body[i].x + nx*snake->body[i].y  ){
+            exit(1);
+        }
     }
+
     snake->body[0].x = snake->body[0].x + dxdy[0];
     snake->body[0].y = snake->body[0].y + dxdy[1];
 
@@ -123,9 +131,10 @@ void startGame(int lap, int nx, int ny, Snake* snake, int bg[]){
             snake->length += 1;
             snake->body[snake->length - 1].x = -1;
             snake->body[snake->length - 1].y = -1; 
+            lap = lap * 0.8 + 4 ;
         }
         printf("%d; %d\n", dxdy[0], dxdy[1]);
-        update_snake_coordinates(snake, dxdy);
+        update_snake_coordinates(snake, dxdy,nx);
     }
 }
 
