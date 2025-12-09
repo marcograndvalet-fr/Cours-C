@@ -54,11 +54,11 @@ void snake_movement(char k, int dxdy[2]){
     }else if(k=='s'||k=='2'){
         // Down                                                                        
         dxdy[0] = 0;
-        dxdy[1] = -1;
+        dxdy[1] = 1;
     }else if(k=='z'||k=='8'){
         // Up                                                                      
         dxdy[0] = 0;
-        dxdy[1] = 1;
+        dxdy[1] = -1;
     }
 }
 
@@ -67,10 +67,8 @@ bool verifyBorder(Snake* snake, int nx, int ny){
     // Return false if the snake is out of bounds
     //        true otherwise
     int x = snake->body[0].x;
-    int y = snake->body[1].y;
-    if (y == 0 || y == ny-1 || x == 0 || x == nx-1) {
-    return true;
-    }
+    int y = snake->body[0].y;
+    return y == 0 || y == ny-1 || x == 0 || x == nx-1;
 }
 
 
@@ -105,7 +103,7 @@ void startGame(int lap, int nx, int ny, Snake* snake, int bg[]){
 
     createFood( bg, food, nx, ny );
 
-    while( true ){
+    while(true){
         frameSleep(lap);
         if( keyEvent() ){
             key = getchar(); 
@@ -115,8 +113,8 @@ void startGame(int lap, int nx, int ny, Snake* snake, int bg[]){
         add_snake( snake, bg, nx, ny );
         printFrame(nx, ny, bg);
         remove_snake(snake, bg, nx, ny);
-        bool out =  verifyBorder(snake, nx, ny);
-        if( out == false){
+        bool out = verifyBorder(snake, nx, ny);
+        if(out){
             exit(1);
         }
         bool eat = eatFood(food, snake);
@@ -126,6 +124,7 @@ void startGame(int lap, int nx, int ny, Snake* snake, int bg[]){
             snake->body[snake->length - 1].x = -1;
             snake->body[snake->length - 1].y = -1; 
         }
+        printf("%d; %d\n", dxdy[0], dxdy[1]);
         update_snake_coordinates(snake, dxdy);
     }
 }
